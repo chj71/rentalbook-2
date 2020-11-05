@@ -34,7 +34,7 @@
 
 비기능적 요구사항
 1. 트랜잭션
-    - 대여요청을 하면 바로 대여확정이 시작된다  Sync 호출 
+    - 대여요청을 하면 바로 대여확정이 시작된다  Sync 호출 b>
 2. 장애격리
     - 대여요청은 365일 24시간 받을 수 있어야 한다  Async (event-driven), Eventual Consistency
     - 대여요청 시스템이 과중되면 사용자를 잠시동안 받지 않고 대여요청를 잠시후에 하도록 유도한다  Circuit breaker, fallback
@@ -473,35 +473,10 @@ http localhost:8083/deliveries     # 배송정보가 생성됨을 확인
 
 # gateway 적용
 소스적용 (istio-gateway)
-<div>
-<img width="400" src="https://user-images.githubusercontent.com/30397679/98193629-0b7d9380-1f61-11eb-8dd7-ed7cae74ad53.PNG"/>
-</div>
+![image](https://user-images.githubusercontent.com/65432084/98261846-3fd86a80-1fc8-11eb-9386-fa733757620d.PNG)
 
-소스적용 (istio-virtual-service)
-<div>
-<img width="400" src="https://user-images.githubusercontent.com/30397679/98193728-3536ba80-1f61-11eb-92e9-397cb09b5ea5.PNG"/>
-</div>
-
-호출확인(orderl)
-<div>
-<img width="250" src="https://user-images.githubusercontent.com/30397679/98194005-c574ff80-1f61-11eb-897b-a630c5abea71.PNG"/>
-</div>
-호출확인(pay)
-<div>
-<img width="250" src="https://user-images.githubusercontent.com/30397679/98194010-c86ff000-1f61-11eb-9890-18b3b99c9552.PNG"/>
-</div>
-호출확인(delivery)
-<div>
-<img width="250" src="https://user-images.githubusercontent.com/30397679/98194020-cb6ae080-1f61-11eb-9d87-bce9e0482aee.PNG"/>
-</div>
-호출확인(mypage)
-<div>
-<img width="250" src="https://user-images.githubusercontent.com/30397679/98194015-ca39b380-1f61-11eb-8d07-ba6a349aa52d.PNG"/>
-</div>
-호출확인(cancel)
-<div>
-<img width="250" src="https://user-images.githubusercontent.com/30397679/98194032-d0c82b00-1f61-11eb-8ded-a405b135d444.PNG"/>
-</div>
+호출확인(order)
+![image](https://user-images.githubusercontent.com/30397679/98194005-c574ff80-1f61-11eb-897b-a630c5abea71.PNG)
 
 각 구현체들은 각자의 source repository 에 구성되었고, 사용한 CI/CD 플랫폼은 Azure를 사용하였으며, pipeline build script 는 각 프로젝트 폴더 이하에 deployment.yml, service.yml 에 포함되었다.
 
@@ -510,7 +485,7 @@ http localhost:8083/deliveries     # 배송정보가 생성됨을 확인
 
 * 서킷 브레이킹 프레임워크의 선택: Spring FeignClient + Hystrix 옵션을 사용하여 구현함
 
-시나리오는 대여(rent)--> 배송(delivery) 시의 연결을 RESTful Request/Response 로 연동하여 구현이 되어있고, 배송 요청이 과도할 경우 CB 를 통하여 장애격리.
+시나리오는 요청(order)--> 대여(rent) 시의 연결을 RESTful Request/Response 로 연동하여 구현이 되어있고, 대여요청이 과도할 경우 CB 를 통하여 장애격리.
 
 - Hystrix 를 설정:  요청처리 쓰레드에서 처리시간이 1000 밀리가 넘어서기 시작하여 어느정도 유지되면 CB 회로가 닫히도록 (요청을 빠르게 실패처리, 차단) 설정
 ```
@@ -526,12 +501,12 @@ hystrix:
 
 ```
 
-- 피호출 서비스(배송:delivery) 의 임의 부하 처리 - 800 밀리에서 증감 300 밀리 정도 왔다갔다 하게
+- 피호출 서비스(대여:rent) 의 임의 부하 처리 - 800 밀리에서 증감 300 밀리 정도 왔다갔다 하게
 ```
-# delivery.java (Entity)
+# rent.java (Entity)
 
     @PostPersist
-    public void onPostPersist(){
+    public void onPrePersist(){
         try {
             Thread.sleep((long) (800 + Math.random() * 300));
         } catch (InterruptedException e) {
@@ -551,25 +526,25 @@ hystrix:
 * 부하테스터 siege 툴을 통한 서킷 브레이커 동작 확인:
 - 동시사용자 1명
 - 10초 동안 실시
-![image](https://user-images.githubusercontent.com/68535067/97244569-66660b00-183c-11eb-9b7e-cda86b0d59ac.png)
+![image]()
+<b>증적</b>
 
 - 운영시스템은 죽지 않고 지속적으로 CB 에 의하여 적절히 회로가 열림과 닫힘이 벌어지면서 자원을 보호하고 있음을 보여줌. 하지만, 81.82% 가 성공하였고, 18.18%가 실패했다는 것은 고객 사용성에 있어 좋지 않기 때문에 Retry 설정과 동적 Scale out (replica의 자동적 추가,HPA) 을 통하여 시스템을 확장 해주는 후속처리가 필요.
 
-- Availability 가 높아진 것을 확인 (siege)
 
 ### 오토스케일 아웃
 앞서 CB 는 시스템을 안정되게 운영할 수 있게 해줬지만 사용자의 요청을 100% 받아들여주지 못했기 때문에 이에 대한 보완책으로 자동화된 확장 기능을 적용하고자 한다. 
 
 
-- 배송서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 15프로를 넘어서면 replica 를 10개까지 늘려준다:
+- 대여서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 15프로를 넘어서면 replica 를 10개까지 늘려준다:
 ```
-kubectl autoscale deploy deploy --min=1 --max=10 --cpu-percent=15
+kubectl autoscale deploy rent --min=1 --max=10 --cpu-percent=15
 ```
-![image](https://user-images.githubusercontent.com/68535067/97245477-75e65380-183e-11eb-9557-d247d53be45f.png)
+![image]()
 
 - CB 에서 했던 방식대로 워크로드를 2분 동안 걸어준다.
 ```
-siege -c100 -t120S -r10 --content-type "application/json" 'http://rent:8080/rent POST {"memberId": "100", "qty":5}'
+siege -c100 -t120S -r10 --content-type "application/json" 'http://order:8080/orders POST item="COSMOS" status="Ordered"
 
 ```
 - 오토스케일이 어떻게 되고 있는지 모니터링을 걸어둔다:
@@ -577,10 +552,10 @@ siege -c100 -t120S -r10 --content-type "application/json" 'http://rent:8080/rent
 kubectl get deploy pay -w
 ```
 - 어느정도 시간이 흐른 후 (약 30초) 스케일 아웃이 벌어지는 것을 확인할 수 있다:
-![image](https://user-images.githubusercontent.com/68535067/97246490-d1b1dc00-1840-11eb-8ef2-ec4d6610f3e2.png)
+![image]()
 
 - siege 의 로그를 보아도 전체적인 성공률이 높아진 것을 확인 할 수 있다. 
-![image](https://user-images.githubusercontent.com/68535067/97247046-2b66d600-1842-11eb-8648-1715eedf0d58.png)
+![image]()
 
 ## 무정지 재배포
 
@@ -598,7 +573,7 @@ kubectl set image ...
 ```
 
 - seige 의 화면으로 넘어가서 Availability 가 100% 미만으로 떨어졌는지 확인
-![image](https://user-images.githubusercontent.com/68535067/97380841-36396d80-190b-11eb-8aa9-0d1e4efbcd11.png)
+![image]()
 
 
 배포기간중 Availability 가 평소 100%에서 60% 대로 떨어지는 것을 확인. 원인은 쿠버네티스가 성급하게 새로 올려진 서비스를 READY 상태로 인식하여 서비스 유입을 진행한 것이기 때문. 이를 막기위해 Readiness Probe 를 설정함:
@@ -611,7 +586,7 @@ kubectl apply -f kubernetes/deployment.yaml
 ```
 
 - 동일한 시나리오로 재배포 한 후 Availability 확인:
-![image](https://user-images.githubusercontent.com/68535067/97247604-569df500-1843-11eb-9c50-a405a5f6c9c4.png)
+![image]()
 
 배포기간 동안 Availability 가 변화없기 때문에 무정지 재배포가 성공한 것으로 확인됨.
 
