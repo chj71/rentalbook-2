@@ -198,8 +198,9 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, Long>
 
 ```
 - 적용 후 REST API 의 테스트
-```
+
 # order 서비스의 대여요청처리
+```
 http POST http://localhost:8081/orders item="COSMOS" status="Ordered"
 ```
 ![image](https://user-images.githubusercontent.com/65432084/98256923-7c08cc80-1fc2-11eb-8527-8ff3c18e8c8f.PNG)
