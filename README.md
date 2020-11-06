@@ -201,26 +201,27 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, Long>
 ```
 # order 서비스의 대여요청처리
 http POST http://localhost:8081/orders item="COSMOS" status="Ordered"
-
+```
 ![image](https://user-images.githubusercontent.com/65432084/98256923-7c08cc80-1fc2-11eb-8527-8ff3c18e8c8f.PNG)
 
-
+```
 # order 서비스의 대여취소 처리
 http PATCH http://localhost:8081/orders/1 status="Order Cancel"
-
+```
 ![image](https://user-images.githubusercontent.com/65432084/98257163-b2dee280-1fc2-11eb-96c9-8688ba498adf.PNG)
 
-
+```
 # 주문 상태 확인
 http://localhost:8081/orders/1
-
-![image](https://user-images.githubusercontent.com/65432084/98257412-02bda980-1fc3-11eb-99d5-ce0dd856a730.PNG)
 ```
+![image](https://user-images.githubusercontent.com/65432084/98257412-02bda980-1fc3-11eb-99d5-ce0dd856a730.PNG)
+
 
 
 
 ## 동기식 호출 과 Fallback 처리
 
+```
 대여요청(order) -> 대여(rent) 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리하기로 하였다. 호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다. 
 
 - 결제서비스를 호출하기 위하여 Stub과 (FeignClient) 를 이용하여 Service 대행 인터페이스 (Proxy) 를 구현 
