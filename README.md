@@ -621,9 +621,16 @@ kubectl apply -f kubernetes/deployment.yaml
 - http get방식에서 tcp방식 포트 40001로 변경하여 pod describe
 
 
-![image](https://user-images.githubusercontent.com/65432084/98329400-7dc2a680-203b-11eb-84e1-a686d1c1d8a1.PNG)
+![image](https://user-images.githubusercontent.com/65432084/98336161-c1241180-2049-11eb-9716-1806ad991923.PNG)
 
 
-![image](https://user-images.githubusercontent.com/65432084/98329548-ced29a80-203b-11eb-93d6-d212739a0b39.PNG)
+![image](https://user-images.githubusercontent.com/65432084/98336232-e0bb3a00-2049-11eb-8e73-4abd20790f8d.PNG)
+
+- 설정 원복
+
+![image](https://user-images.githubusercontent.com/65432084/98336298-05171680-204a-11eb-9033-c2a3047b82d6.PNG)
+
+
+![image](https://user-images.githubusercontent.com/65432084/98336382-2c6de380-204a-11eb-946e-644dae3438d2.PNG)
 
 
