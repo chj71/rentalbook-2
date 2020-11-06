@@ -281,7 +281,7 @@ public interface RentService {
 # 대여요청 처리
 http POST http://localhost:8081/orders item="COSMOS" status="Ordered"   #Fail
 
-![image](https://user-images.githubusercontent.com/65432084/98258410-31884f80-1fc4-11eb-8e59-759952694007.PNG)
+![image](https://user-images.githubusercontent.com/65432084/98317638-3bd83700-2020-11eb-84ca-a5d677a63871.PNG)
 
 #대여서비스 재기동
 cd rent
@@ -290,7 +290,7 @@ mvn spring-boot:run
 #대여요청 처리
 http POST http://localhost:8081/orders item="COSMOS" status="Ordered"  #Success
 
-![image](https://user-images.githubusercontent.com/65432084/98258910-c4c18500-1fc4-11eb-9247-b7c4917d99d1.PNG)
+![image](https://user-images.githubusercontent.com/65432084/98317682-50b4ca80-2020-11eb-94cc-3e0a2d15d6bb.PNG)
 ```
 
 - 또한 과도한 요청시에 서비스 장애가 도미노 처럼 벌어질 수 있다. (서킷브레이커, 폴백 처리는 운영단계에서 설명한다.)
@@ -447,12 +447,12 @@ public class PolicyHandler{
 #주문요청처리
 http POST http://localhost:8081/orders item="COSMOS" status="Ordered"   #Success
 
-![image](https://user-images.githubusercontent.com/65432084/98261501-e112f100-1fc7-11eb-8386-4b8448ca807f.PNG)
+![image](https://user-images.githubusercontent.com/65432084/98317881-bbfe9c80-2020-11eb-9268-98800c8ff4a1.PNG)
 
 #배송상태 확인
-http localhost:8083/deliveries     # 배송정보 없음 확인
+http localhost:8083/deliveries     # 배송서비스 중단 확인
 
-![image](https://user-images.githubusercontent.com/65432084/98261579-f2f49400-1fc7-11eb-8bb7-3d02e8f9b6bd.PNG)
+![image](https://user-images.githubusercontent.com/65432084/98317952-dc2e5b80-2020-11eb-81b4-59b716c64c14.PNG)
 
 #delivery 서비스 기동
 cd delivery
@@ -461,7 +461,7 @@ mvn spring-boot:run
 #주문상태 확인
 http localhost:8083/deliveries     # 배송정보가 생성됨을 확인
 
-![image](https://user-images.githubusercontent.com/65432084/98261654-069ffa80-1fc8-11eb-9e68-970f910d34d3.PNG)
+![image](https://user-images.githubusercontent.com/65432084/98318010-0253fb80-2021-11eb-8374-3b6cd553cfcf.PNG)
 
 ```
 
