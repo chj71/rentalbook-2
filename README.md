@@ -584,7 +584,7 @@ kubectl set image ...
 ```
 
 - seige 의 화면으로 넘어가서 Availability 가 100% 미만으로 떨어졌는지 확인
-![image]()
+![image](https://user-images.githubusercontent.com/65432084/98325285-c83f2580-2031-11eb-8b90-659ca30ce37f.PNG)
 
 
 배포기간중 Availability 가 평소 100%에서 60% 대로 떨어지는 것을 확인. 원인은 쿠버네티스가 성급하게 새로 올려진 서비스를 READY 상태로 인식하여 서비스 유입을 진행한 것이기 때문. 이를 막기위해 Readiness Probe 를 설정함:
@@ -597,7 +597,7 @@ kubectl apply -f kubernetes/deployment.yaml
 ```
 
 - 동일한 시나리오로 재배포 한 후 Availability 확인:
-![image]()
+![image](https://user-images.githubusercontent.com/65432084/98325322-ddb44f80-2031-11eb-93d2-1ac7ee16a358.PNG)
 
 배포기간 동안 Availability 가 변화없기 때문에 무정지 재배포가 성공한 것으로 확인됨.
 
