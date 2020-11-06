@@ -485,10 +485,10 @@ http localhost:8083/deliveries     # 배송정보가 생성됨을 확인
 
 # gateway 적용
 소스적용 (istio-gateway)
-![image](https://user-images.githubusercontent.com/65432084/98261846-3fd86a80-1fc8-11eb-9386-fa733757620d.PNG)
+![image](https://user-images.githubusercontent.com/65432084/98319105-5f50b100-2023-11eb-842c-fb5b9199342b.PNG)
 
 호출확인(order)
-![image](https://user-images.githubusercontent.com/30397679/98194005-c574ff80-1f61-11eb-897b-a630c5abea71.PNG)
+![image](https://user-images.githubusercontent.com/65432084/98319161-7b545280-2023-11eb-9745-20cb562fd322.PNG)
 
 각 구현체들은 각자의 source repository 에 구성되었고, 사용한 CI/CD 플랫폼은 Azure를 사용하였으며, pipeline build script 는 각 프로젝트 폴더 이하에 deployment.yml, service.yml 에 포함되었다.
 
