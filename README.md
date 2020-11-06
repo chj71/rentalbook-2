@@ -140,10 +140,12 @@ mvn spring-boot:run
 
 cd mypage
 mvn spring-boot:run  
+```
 
 ## DDD 의 적용
 
 - 각 서비스내에 도출된 핵심 Aggregate Root 객체를 Entity 로 선언하였다: (예시는 order 마이크로 서비스). 이때 가능한 현업에서 사용하는 언어 (유비쿼터스 랭귀지)를 그대로 사용하려고 노력하였고 영문으로 사용하여 별다른 오류 없이 구현하였다.
+
 
 ```
 package rentalbook;
@@ -205,14 +207,14 @@ http POST http://localhost:8081/orders item="COSMOS" status="Ordered"
 ```
 ![image](https://user-images.githubusercontent.com/65432084/98256923-7c08cc80-1fc2-11eb-8527-8ff3c18e8c8f.PNG)
 
-```
 # order 서비스의 대여취소 처리
+```
 http PATCH http://localhost:8081/orders/1 status="Order Cancel"
 ```
 ![image](https://user-images.githubusercontent.com/65432084/98257163-b2dee280-1fc2-11eb-96c9-8688ba498adf.PNG)
 
-```
 # 주문 상태 확인
+```
 http://localhost:8081/orders/1
 ```
 ![image](https://user-images.githubusercontent.com/65432084/98257412-02bda980-1fc3-11eb-99d5-ce0dd856a730.PNG)
@@ -222,7 +224,6 @@ http://localhost:8081/orders/1
 
 ## 동기식 호출 과 Fallback 처리
 
-```
 대여요청(order) -> 대여(rent) 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리하기로 하였다. 호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다. 
 
 - 결제서비스를 호출하기 위하여 Stub과 (FeignClient) 를 이용하여 Service 대행 인터페이스 (Proxy) 를 구현 
@@ -274,26 +275,29 @@ public interface RentService {
 
 
     }
-    ```
 
 
 ```
+
 # 대여 (rent) 서비스를 잠시 내려놓음 (ctrl+c)
 
-# 대여요청 처리
+```
 http POST http://localhost:8081/orders item="COSMOS" status="Ordered"   #Fail
+```
 
 ![image](https://user-images.githubusercontent.com/65432084/98317638-3bd83700-2020-11eb-84ca-a5d677a63871.PNG)
-
-#대여서비스 재기동
-cd rent
+여서비스 재기동
 mvn spring-boot:run
+```
+cd rent
+```
 
 #대여요청 처리
+```
 http POST http://localhost:8081/orders item="COSMOS" status="Ordered"  #Success
+```
 
 ![image](https://user-images.githubusercontent.com/65432084/98317682-50b4ca80-2020-11eb-94cc-3e0a2d15d6bb.PNG)
-```
 
 - 또한 과도한 요청시에 서비스 장애가 도미노 처럼 벌어질 수 있다. (서킷브레이커, 폴백 처리는 운영단계에서 설명한다.)
 
@@ -443,29 +447,35 @@ public class PolicyHandler{
 
 
 대여서비스는 배송서비스와 완전히 분리되어있으며, 이벤트 수신에 따라 처리되기 때문에, 배송시스템이 유지보수로 인해 잠시 내려간 상태라도 대여요청을 받는데 문제가 없다:
-```
+
 # 배송 서비스 (delivery) 를 잠시 내려놓음 (ctrl+c)
 
 #주문요청처리
+```
 http POST http://localhost:8081/orders item="COSMOS" status="Ordered"   #Success
+```
 
 ![image](https://user-images.githubusercontent.com/65432084/98317881-bbfe9c80-2020-11eb-9268-98800c8ff4a1.PNG)
 
 #배송상태 확인
+```
 http localhost:8083/deliveries     # 배송서비스 중단 확인
-
+```
 ![image](https://user-images.githubusercontent.com/65432084/98317952-dc2e5b80-2020-11eb-81b4-59b716c64c14.PNG)
 
+```
 #delivery 서비스 기동
 cd delivery
 mvn spring-boot:run
+```
 
 #주문상태 확인
+```
 http localhost:8083/deliveries     # 배송정보가 생성됨을 확인
+```
 
 ![image](https://user-images.githubusercontent.com/65432084/98318010-0253fb80-2021-11eb-8374-3b6cd553cfcf.PNG)
 
-```
 
 # CQRS 적용
 대여요청된 현황을 view로 구현함.
