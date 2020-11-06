@@ -604,23 +604,16 @@ kubectl apply -f kubernetes/deployment.yaml
 
 
 ## Configmap
-- configmap.yaml 파일설정
-
-![image](https://user-images.githubusercontent.com/53685313/98197448-18eb4b80-1f6a-11eb-9bec-40e2eec2dcab.png)
-
-- deployment.yaml파일 설정
-![image](https://user-images.githubusercontent.com/53685313/98197450-1dafff80-1f6a-11eb-8e2e-cec8593b6b0c.png)
 
 - application.yaml 파일 설정
-![image](https://user-images.githubusercontent.com/53685313/98197457-23a5e080-1f6a-11eb-9ca0-bdaef1e05abe.png)
+![image](https://user-images.githubusercontent.com/65432084/98329185-fb39e700-203a-11eb-9e1a-8a421e2cefe2.PNG)
 
 - CancellationService 파일 설정
-![image](https://user-images.githubusercontent.com/53685313/98197471-2d2f4880-1f6a-11eb-9911-78227655ec6a.png)
-
+![image](https://user-images.githubusercontent.com/65432084/98329208-0b51c680-203b-11eb-8ee3-be10ee01459d.PNG)
 
 
 - 8080포트로 설정하여 테스트
-![image](https://user-images.githubusercontent.com/53685313/98197481-38827400-1f6a-11eb-98ec-cd30c6b9f9e5.png)
+![image](https://user-images.githubusercontent.com/65432084/98329254-21f81d80-203b-11eb-992e-cbc86478ca06.PNG)
 
 
 ## Livness구현
@@ -628,22 +621,9 @@ kubectl apply -f kubernetes/deployment.yaml
 - http get방식에서 tcp방식 포트 40001로 변경하여 pod describe
 
 
-![image](https://user-images.githubusercontent.com/53685313/98198848-4b4a7800-1f6d-11eb-9005-00302ec2dfa1.png)
+![image](https://user-images.githubusercontent.com/65432084/98328857-15bf9080-203a-11eb-812d-2a8f6ca02fb1.PNG)
 
 
 ![image](https://user-images.githubusercontent.com/53685313/98198470-5fda4080-1f6c-11eb-8f10-3c8902364ad6.png)
 
-
-
-
-- tcp 8080 변경 후 deploy 재시작 이후 describe 확인
-
-![image](https://user-images.githubusercontent.com/53685313/98198613-afb90780-1f6c-11eb-96d1-798a86c935df.png)
-![image](https://user-images.githubusercontent.com/53685313/98198740-04f51900-1f6d-11eb-8d09-e9b978a8f8d0.png)
-
-
-
-
-- 원복후 정상 확인
-![image](https://user-images.githubusercontent.com/53685313/98197525-5059f800-1f6a-11eb-9bca-8157c21c6451.png)
 
