@@ -624,6 +624,6 @@ kubectl apply -f kubernetes/deployment.yaml
 ![image](https://user-images.githubusercontent.com/65432084/98329400-7dc2a680-203b-11eb-84e1-a686d1c1d8a1.PNG)
 
 
-![image](https://user-images.githubusercontent.com/53685313/98198470-5fda4080-1f6c-11eb-8f10-3c8902364ad6.png)
+![image](https://user-images.githubusercontent.com/65432084/98329548-ced29a80-203b-11eb-93d6-d212739a0b39.PNG)
 
 
